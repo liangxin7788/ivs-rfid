@@ -51,7 +51,7 @@ public class CheckParamUtil {
         }
     }
 
-    public static void checkParamDetail(Object object, String s) throws OperateException {
+    private static void checkParamDetail(Object object, String s) throws OperateException {
         Field declaredField = null;
         try {
             declaredField = object.getClass().getDeclaredField(s);

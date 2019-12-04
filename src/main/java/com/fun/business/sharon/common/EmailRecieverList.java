@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @Package: com.fun.business.sharon.common
  * @ClassName: EmailRecieverList
- * @Description: java类作用描述
+ * @Description: 客户线上留言时，邮件接收者列表
  * @Author: liangxin
  * @CreateDate: 2019/10/31 18:08
  * @UpdateDate: 2019/10/31 18:08

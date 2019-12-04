@@ -7,12 +7,11 @@ server:
 spring:
   datasource:
     sharon:
-      url: jdbc:mysql://59.110.224.230:3306/sharon?allowMultiQueries=true
+      url: jdbc:mysql://59.110.224.230:3306/ivs-rfid?allowMultiQueries=true
       type: com.alibaba.druid.pool.DruidDataSource
       driverClassName: com.mysql.jdbc.Driver
       username: root
       password: liangxin
-#      password: liangxin
       validation-query: SELECT 1;
       sql-script-encoding: UTF-8
       initial-size: 1
@@ -89,6 +88,3 @@ spring:
           writetimeout: 6000
   rabbitmq:
     addresses: 127.0.0.1:5672
-
-sharon:
-  uploadPath: /home/sharon/

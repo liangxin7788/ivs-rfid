@@ -20,7 +20,7 @@ public class DataSourceAspect {
     private void sharonAspect() {
     }
 
-    @Pointcut("execution(* com.fun.business.sharon.biz.personal.dao..*.*(..)) ")
+    @Pointcut("execution(* com.fun.business.sharon.biz.other.dao..*.*(..)) ")
     private void otherAspect() {
     }
 
