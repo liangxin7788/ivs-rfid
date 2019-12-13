@@ -89,3 +89,7 @@ spring:
           writetimeout: 6000
   rabbitmq:
     addresses: 127.0.0.1:5672
+
+sharon:
+  file_path: D:\sharon\file\
+  file_url: D:\sharon\file\
