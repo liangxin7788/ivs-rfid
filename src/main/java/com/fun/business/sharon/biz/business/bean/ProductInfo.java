@@ -3,12 +3,14 @@ package com.fun.business.sharon.biz.business.bean;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fun.business.sharon.biz.business.vo.SimilarApplicationVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * <p>
@@ -31,7 +33,7 @@ public class ProductInfo implements Serializable {
     /**
      * 产品类型id
      */
-    private Integer productTypeId;
+    private String productTypeCodes;
 
     /**
      * 产品中文名
@@ -69,7 +71,7 @@ public class ProductInfo implements Serializable {
     private Date updateAt;
 
     @TableField(exist = false)
-    private ProductType productType;
+    private List<SimilarApplicationVo> productSimilars;
 
     @TableField(exist = false)
     private ProductPic productPic;

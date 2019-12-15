@@ -2,7 +2,9 @@ package com.fun.business.sharon.biz.business.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
+import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fun.business.sharon.biz.business.bean.ProductInfo;
@@ -12,6 +14,7 @@ import com.fun.business.sharon.biz.business.dao.ProductPicMapper;
 import com.fun.business.sharon.biz.business.service.ProductInfoService;
 import com.fun.business.sharon.biz.business.vo.AddProductVo;
 import com.fun.business.sharon.biz.business.vo.ProductListSearchVo;
+import com.fun.business.sharon.biz.business.vo.SimilarApplicationVo;
 import com.fun.business.sharon.common.OperateException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,9 +76,21 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
     @Override
     @Transactional
     public Integer addProduct(AddProductVo vo) {
-        Integer productTypeId = vo.getProductTypeId();
         ProductInfo productInfo = new ProductInfo();
-        productInfo.setProductTypeId(productTypeId);
+//        String productTypeCodes = vo.getProductTypeCodes();
+//        String[] codes = productTypeCodes.split(",");
+//        String joinCodes = "";
+//        for (int i = 0; i < codes.length; i++) {
+//
+//            if (i != codes.length){
+//                joinCodes += codes[i] + ",";
+//            }else {
+//                joinCodes += codes[i];
+//            }
+//
+//        }
+
+        productInfo.setProductTypeCodes(vo.getProductTypeCodes());
         productInfo.setCnName(vo.getProductCnName());
         productInfo.setEnName(vo.getProductEnName());
 
@@ -121,4 +136,29 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
         productPic.setImageUrl(fileUrl + filename);
         return productPicMapper.insert(productPic);
     }
+
+    @Override
+    @Transactional
+    public Integer delProduct(Integer productId) {
+        ProductInfo productInfo = productInfoMapper.selectById(productId);
+        log.info("删除产品 " + JSON.toJSONString(productInfo));
+        return productInfoMapper.deleteById(productInfo);
+    }
+
+    @Override
+    public ProductInfo getProductDetail(Integer productId) {
+        ProductInfo productDetail = productInfoMapper.getProductDetail(productId);
+        String applications = productDetail.getApplication();
+        if (StringUtils.isNotEmpty(applications)) {
+            String[] split = applications.split(",");
+            List<SimilarApplicationVo> similarList = productInfoMapper.selectSimilarByApplication(productDetail.getId(), split[0]);
+            if (CollectionUtils.isNotEmpty(similarList)) {
+                productDetail.setProductSimilars(similarList);
+            }
+        }
+        return productDetail;
+    }
+
+
+
 }

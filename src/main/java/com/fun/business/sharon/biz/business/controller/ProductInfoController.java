@@ -7,6 +7,7 @@ import com.fun.business.sharon.biz.business.vo.AddProductVo;
 import com.fun.business.sharon.biz.business.vo.ProductListSearchVo;
 import com.fun.business.sharon.common.GlobalResult;
 import com.fun.business.sharon.utils.CheckParamUtil;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/productInfo")
+@Api(description = "产品信息相关接口")
 @Slf4j
 public class ProductInfoController {
 
@@ -29,8 +31,8 @@ public class ProductInfoController {
     private ProductInfoService productInfoService;
 
     @PostMapping("/getProductList")
+    @ApiOperation("列表查询")
     public GlobalResult<?> getProductList(@RequestBody ProductListSearchVo vo){
-
         return GlobalResult.newSuccess(productInfoService.getProductList(vo));
     }
 
@@ -46,6 +48,18 @@ public class ProductInfoController {
             return GlobalResult.newError("添加产品失败！");
         }
         return GlobalResult.newSuccess(result);
+    }
+
+    @GetMapping("/delProduct")
+    @ApiOperation("删除产品")
+    public GlobalResult<?> delProduct(@RequestParam(value = "productId", required = true)Integer productId){
+        return GlobalResult.newSuccess(productInfoService.delProduct(productId));
+    }
+
+    @GetMapping("/getProductDetail")
+    @ApiOperation("获取产品详情")
+    public GlobalResult<?> getProductDetail(@RequestParam(value = "productId", required = true)Integer productId){
+        return GlobalResult.newSuccess(productInfoService.getProductDetail(productId));
     }
 
 }

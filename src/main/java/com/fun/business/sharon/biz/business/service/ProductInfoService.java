@@ -15,7 +15,12 @@ import com.fun.business.sharon.biz.business.vo.ProductListSearchVo;
  * @since 2019-12-12
  */
 public interface ProductInfoService extends IService<ProductInfo> {
+
     IPage<ProductInfo> getProductList(ProductListSearchVo vo);
 
     Integer addProduct(AddProductVo vo);
+
+    Integer delProduct(Integer productId);
+
+    ProductInfo getProductDetail(Integer productId);
 }

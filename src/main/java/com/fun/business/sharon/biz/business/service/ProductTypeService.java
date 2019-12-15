@@ -16,4 +16,6 @@ import java.util.List;
 public interface ProductTypeService extends IService<ProductType> {
 
     List<ProductType> getTypeList();
+
+    Integer deleteType(Integer typeId);
 }

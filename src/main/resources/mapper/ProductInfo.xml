@@ -5,7 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.fun.business.sharon.biz.business.bean.ProductInfo">
         <id column="id" property="id" />
-        <result column="product_type_id" property="productTypeId" />
+        <result column="product_type_codes" property="productTypeCodes" />
         <result column="cn_name" property="cnName" />
         <result column="en_name" property="enName" />
         <result column="description" property="description" />
@@ -13,13 +13,13 @@
         <result column="application" property="application" />
         <result column="create_at" property="createAt" />
         <result column="update_at" property="updateAt" />
-        <association property="productType" javaType="com.fun.business.sharon.biz.business.bean.ProductType">
-            <id column="pt_id" property="id" />
-            <result column="pt_type_cn" property="typeCn" />
-            <result column="pt_type_en" property="typeEn" />
-            <result column="pt_create_at" property="createAt" />
-            <result column="pt_update_at" property="updateAt" />
-        </association>
+<!--        <association property="productType" javaType="com.fun.business.sharon.biz.business.bean.ProductType">-->
+<!--            <id column="pt_id" property="id" />-->
+<!--            <result column="pt_type_cn" property="typeCn" />-->
+<!--            <result column="pt_type_en" property="typeEn" />-->
+<!--            <result column="pt_create_at" property="createAt" />-->
+<!--            <result column="pt_update_at" property="updateAt" />-->
+<!--        </association>-->
         <association property="productPic" javaType="com.fun.business.sharon.biz.business.bean.ProductPic">
             <id column="pp_id" property="id" />
             <result column="pp_product_info_id" property="productInfoId" />
@@ -32,16 +32,16 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, product_type_id, cn_name, en_name, description, model, application, create_at, update_at
+        id, product_type_codes, cn_name, en_name, description, model, application, create_at, update_at
     </sql>
 
     <select id="getProductListCount" resultType="int">
         select count(1) from product_info pi
-        left join product_type pt on pi.product_type_id = pt.id
+--         left join product_type pt on pi.product_type_id = pt.id
         <where>
             1 = 1
-            <if test="vo.productTypeId != null">
-                and pt.id = #{vo.productTypeId}
+            <if test="vo.productTypeCode != null">
+                and pi.product_type_codes like concat('%', #{vo.productTypeCode}, '%')
             </if>
             <if test="vo.productTitle != null and vo.productTitle != ''">
                 and (pi.cn_name like concat('%', #{vo.productTitle}, '%') or pi.en_name like concat('%', #{vo.productTitle}, '%'))
@@ -50,21 +50,44 @@
     </select>
 
     <select id="getProductList" resultMap="BaseResultMap">
-        select pi.*, pt.id pt_id, pt.type_cn pt_type_cn, pt.type_en pt_type_en, pt.create_at pt_create_at, pt.update_at pt_update_at,
+        select pi.*,
         pp.id pp_id, pp.product_info_id pp_product_info_id, pp.image_name pp_image_name, pp.image_url pp_image_url,
         pp.create_at pp_create_at, pp.update_at pp_update_at
         from product_info pi
-        left join product_type pt on pi.product_type_id = pt.id
+--         left join product_type pt on pi.product_type_id = pt.id
         left join product_pic pp on pp.product_info_id = pi.id
         <where>
             1 = 1
-            <if test="vo.productTypeId != null">
-                and pt.id = #{vo.productTypeId}
+            <if test="vo.productTypeCode != null">
+                and pi.product_type_codes like concat('%', #{vo.productTypeCode}, '%')
             </if>
             <if test="vo.productTitle != null and vo.productTitle != ''">
                 and (pi.cn_name like concat('%', #{vo.productTitle}, '%') or pi.en_name like concat('%', #{vo.productTitle}, '%'))
             </if>
         </where>
+        order by pi.update_at desc
+    </select>
+
+    <select id="getProductDetail" resultMap="BaseResultMap">
+        select pi.*,
+        pp.id pp_id, pp.product_info_id pp_product_info_id, pp.image_name pp_image_name, pp.image_url pp_image_url,
+        pp.create_at pp_create_at, pp.update_at pp_update_at
+        from product_info pi
+--         left join product_type pt on pi.product_type_id = pt.id
+        left join product_pic pp on pp.product_info_id = pi.id
+        <where>
+            pi.id = #{productId}
+        </where>
+    </select>
+
+    <select id="selectSimilarByApplication" resultType="com.fun.business.sharon.biz.business.vo.SimilarApplicationVo">
+        select pi.id productId, pi.en_name title, pp.image_url imageUrl
+        from product_info pi
+        left join product_pic pp on pp.product_info_id = pi.id
+        <where>
+            pi.id != #{excludeId} and  pi.application like concat('%', #{application}, '%')
+        </where>
+        limit 3
     </select>
 
 </mapper>

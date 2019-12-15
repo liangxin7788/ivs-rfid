@@ -14,7 +14,7 @@ import lombok.Data;
 @Data
 public class ProductListSearchVo extends Page {
 
-    private Integer productTypeId;
+    private String productTypeCode;
 
     private String productTitle;
 

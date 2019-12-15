@@ -11,10 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
@@ -51,16 +48,13 @@ public class ProductTypeController {
         return GlobalResult.newSuccess(save);
     }
 
-    @PostMapping("/deleteType")
+    @GetMapping("/deleteType")
     @ApiOperation("删除产品类型")
-    public GlobalResult<?> deleteType(@RequestBody ProductType productType){
-        CheckParamUtil.checkParamForCommit(productType, new String[]{"typeEn", "typeCn"});
-        productType.setCreateAt(new Date());
-        productType.setUpdateAt(new Date());
-        return GlobalResult.newSuccess(productTypeService.save(productType));
+    public GlobalResult<?> deleteType(@RequestParam(value = "typeId", required = true)Integer typeId){
+        return GlobalResult.newSuccess(productTypeService.deleteType(typeId));
     }
 
-    @PostMapping("/getTypeList")
+    @GetMapping("/getTypeList")
     @ApiOperation("获取产品类型列表")
     public GlobalResult<?> getTypeList(){
         return GlobalResult.newSuccess(productTypeService.getTypeList());

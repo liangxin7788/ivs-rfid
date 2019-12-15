@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class AddProductVo {
 
     @ApiModelProperty("产品所属分类")
-    private Integer productTypeId;
+    private String productTypeCodes;
 
     @ApiModelProperty("产品中文名")
     private String productCnName;
