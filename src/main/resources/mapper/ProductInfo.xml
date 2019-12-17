@@ -37,7 +37,6 @@
 
     <select id="getProductListCount" resultType="int">
         select count(1) from product_info pi
---         left join product_type pt on pi.product_type_id = pt.id
         <where>
             1 = 1
             <if test="vo.productTypeCode != null">
@@ -54,7 +53,6 @@
         pp.id pp_id, pp.product_info_id pp_product_info_id, pp.image_name pp_image_name, pp.image_url pp_image_url,
         pp.create_at pp_create_at, pp.update_at pp_update_at
         from product_info pi
---         left join product_type pt on pi.product_type_id = pt.id
         left join product_pic pp on pp.product_info_id = pi.id
         <where>
             1 = 1
