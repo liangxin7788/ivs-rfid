@@ -35,7 +35,7 @@ public class ProductTypeController {
     @PostMapping("/addOrEditType")
     @ApiOperation("添加/编辑 产品类型")
     public GlobalResult<?> addOrEditType(@RequestBody ProductType productType){
-        CheckParamUtil.checkParamForCommit(productType, new String[]{"typeEn", "typeCn"});
+        CheckParamUtil.checkParamForCommit(productType, new String[]{"typeEn", "typeCn", "typeCode"});
         boolean save = false;
         productType.setUpdateAt(new Date());
         if (ObjectUtils.isNotEmpty(productType.getId())) {

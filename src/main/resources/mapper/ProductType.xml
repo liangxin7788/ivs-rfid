@@ -7,13 +7,14 @@
         <id column="id" property="id" />
         <result column="type_cn" property="typeCn" />
         <result column="type_en" property="typeEn" />
+        <result column="type_code" property="typeCode" />
         <result column="create_at" property="createAt" />
         <result column="update_at" property="updateAt" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, type_cn, type_en, create_at, update_at
+        id, type_cn, type_en, type_code, create_at, update_at
     </sql>
 
 </mapper>

@@ -41,6 +41,12 @@ public class ProductType implements Serializable {
     private String typeEn;
 
     /**
+     * 产品类型 英文名
+     */
+    @ApiModelProperty("产品类型 英文名")
+    private String typeCode;
+
+    /**
      * 创建时间
      */
     private Date createAt;
