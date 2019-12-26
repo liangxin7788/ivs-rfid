@@ -64,6 +64,7 @@
             </if>
         </where>
         order by pi.update_at desc
+        limit #{offset}, #{pageSize}
     </select>
 
     <select id="getProductDetail" resultMap="BaseResultMap">
