@@ -61,6 +61,21 @@ public class ProductInfo implements Serializable {
     private String application;
 
     /**
+     * 图片
+     */
+    private String images;
+
+    /**
+     * 芯片类型
+     */
+    private String chipType;
+
+    /**
+     * 读距
+     */
+    private String readingRange;
+
+    /**
      * 创建时间
      */
     private Date createAt;
@@ -73,7 +88,5 @@ public class ProductInfo implements Serializable {
     @TableField(exist = false)
     private List<SimilarApplicationVo> productSimilars;
 
-    @TableField(exist = false)
-    private ProductPic productPic;
 
 }

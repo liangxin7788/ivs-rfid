@@ -12,6 +12,11 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * <p>
@@ -38,11 +43,11 @@ public class ProductInfoController {
 
     @PostMapping("/addProduct")
     @ApiOperation("添加产品")
-    public GlobalResult<?> addProduct(AddProductVo vo){
+    public GlobalResult<?> addProduct(HttpServletRequest request){
             Integer result = 0;
         try {
-            CheckParamUtil.checkParamForCommit(vo, new String[]{"productTypeId", "productEnName", "description", "application"});
-            result = productInfoService.addProduct(vo);
+            result = productInfoService.addProduct(request);
+//            result = productInfoService.addProduct(vo);
         }catch (Exception e){
             log.error("添加产品失败！" + e.getMessage(), e);
             return GlobalResult.newError("添加产品失败！");

@@ -11,6 +11,9 @@
         <result column="description" property="description" />
         <result column="model" property="model" />
         <result column="application" property="application" />
+        <result column="images" property="images" />
+        <result column="chip_type" property="chipType" />
+        <result column="reading_range" property="readingRange" />
         <result column="create_at" property="createAt" />
         <result column="update_at" property="updateAt" />
 <!--        <association property="productType" javaType="com.fun.business.sharon.biz.business.bean.ProductType">-->
@@ -20,19 +23,11 @@
 <!--            <result column="pt_create_at" property="createAt" />-->
 <!--            <result column="pt_update_at" property="updateAt" />-->
 <!--        </association>-->
-        <association property="productPic" javaType="com.fun.business.sharon.biz.business.bean.ProductPic">
-            <id column="pp_id" property="id" />
-            <result column="pp_product_info_id" property="productInfoId" />
-            <result column="pp_image_name" property="imageName" />
-            <result column="pp_image_url" property="imageUrl" />
-            <result column="pp_create_at" property="createAt" />
-            <result column="pp_update_at" property="updateAt" />
-        </association>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, product_type_codes, cn_name, en_name, description, model, application, create_at, update_at
+        id, product_type_codes, cn_name, en_name, description, model, application, images, chip_type, reading_range, create_at, update_at
     </sql>
 
     <select id="getProductListCount" resultType="int">
@@ -49,11 +44,8 @@
     </select>
 
     <select id="getProductList" resultMap="BaseResultMap">
-        select pi.*,
-        pp.id pp_id, pp.product_info_id pp_product_info_id, pp.image_name pp_image_name, pp.image_url pp_image_url,
-        pp.create_at pp_create_at, pp.update_at pp_update_at
+        select pi.*
         from product_info pi
-        left join product_pic pp on pp.product_info_id = pi.id
         <where>
             1 = 1
             <if test="vo.productTypeCode != null">
@@ -68,21 +60,16 @@
     </select>
 
     <select id="getProductDetail" resultMap="BaseResultMap">
-        select pi.*,
-        pp.id pp_id, pp.product_info_id pp_product_info_id, pp.image_name pp_image_name, pp.image_url pp_image_url,
-        pp.create_at pp_create_at, pp.update_at pp_update_at
+        select pi.*
         from product_info pi
---         left join product_type pt on pi.product_type_id = pt.id
-        left join product_pic pp on pp.product_info_id = pi.id
         <where>
             pi.id = #{productId}
         </where>
     </select>
 
     <select id="selectSimilarByApplication" resultType="com.fun.business.sharon.biz.business.vo.SimilarApplicationVo">
-        select pi.id productId, pi.en_name title, pp.image_url imageUrl
+        select pi.id productId, pi.en_name title, SUBSTRING_INDEX(pi.images,',',1) imageUrl
         from product_info pi
-        left join product_pic pp on pp.product_info_id = pi.id
         <where>
             pi.id != #{excludeId} and  pi.application like concat('%', #{application}, '%')
         </where>
