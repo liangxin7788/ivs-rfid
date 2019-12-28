@@ -46,4 +46,9 @@ public class Const {
 	 */
 	public static final String PROJECT_NAME = "SHARON";
 
+	/**
+	 * 密码加密固定组合字符串
+	 */
+	public static final String IVS_RFID = "ivs-rfid";
+
 }
