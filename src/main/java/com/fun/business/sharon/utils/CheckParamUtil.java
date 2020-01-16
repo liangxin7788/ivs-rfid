@@ -61,12 +61,12 @@ public class CheckParamUtil {
         if(declaredField != null){
             ApiModelProperty annotation = declaredField.getAnnotation(ApiModelProperty.class);
             if(annotation != null){
-                throw new OperateException(annotation.value() + "参数未填写完成，不能提交");
+                throw new OperateException("Please write down your " + annotation.value() + " so that we can reply to you!");
             }else{
-                throw new OperateException(s + "参数未填写完成，不能提交");
+                throw new OperateException("Please write down your " + s + " so that we can reply to you!");
             }
         }else{
-            throw new OperateException(s + "参数未填写完成，不能提交");
+            throw new OperateException("Please write down your " + s + " so that we can reply to you!");
         }
     }
 
