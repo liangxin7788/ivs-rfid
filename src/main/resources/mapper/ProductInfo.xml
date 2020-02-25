@@ -10,6 +10,7 @@
         <result column="en_name" property="enName" />
         <result column="description" property="description" />
         <result column="model" property="model" />
+        <result column="size" property="size" />
         <result column="application" property="application" />
         <result column="images" property="images" />
         <result column="chip_type" property="chipType" />
@@ -27,7 +28,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, product_type_codes, cn_name, en_name, description, model, application, images, chip_type, reading_range, create_at, update_at
+        id, product_type_codes, cn_name, en_name, description, model, size, application, images, chip_type, reading_range, create_at, update_at
     </sql>
 
     <select id="getProductListCount" resultType="int">

@@ -56,6 +56,11 @@ public class ProductInfo implements Serializable {
     private String model;
 
     /**
+     * 尺寸
+     */
+    private String size;
+
+    /**
      * 应用领域
      */
     private String application;

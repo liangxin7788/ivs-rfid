@@ -167,6 +167,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
         String productTypeCodes = request.getParameter("productTypeCodes");
 
         String model = request.getParameter("model");
+        String size = request.getParameter("size");
         String application = request.getParameter("application");
         String chipType = request.getParameter("chipType");
         String readingRange = request.getParameter("readingRange");
@@ -181,6 +182,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
         productInfo.setProductTypeCodes(productTypeCodes);
 
         productInfo.setModel(model);
+        productInfo.setSize(size);
         productInfo.setApplication(application);
         productInfo.setChipType(chipType);
         productInfo.setReadingRange(readingRange);
