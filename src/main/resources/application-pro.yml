@@ -90,5 +90,5 @@ spring:
     addresses: 127.0.0.1:5672
 
 sharon:
-  file_path: /home/sharon/file/
+  file_path: /home/sharon/
   file_url: http://liangxin.fun/

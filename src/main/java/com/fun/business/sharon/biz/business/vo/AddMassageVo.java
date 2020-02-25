@@ -14,19 +14,19 @@ import lombok.Data;
 @Data
 public class AddMassageVo {
 
-    @ApiModelProperty("客户名称")
+    @ApiModelProperty("Name")
     private String name;
 
     @ApiModelProperty("客户所属国家")
     private String comeFrom;
 
-    @ApiModelProperty("留言内容")
+    @ApiModelProperty("Massage")
     private String massage;
 
     @ApiModelProperty("电话号码")
     private String phoneNumber;
 
-    @ApiModelProperty("客户邮箱")
+    @ApiModelProperty("E-mail")
     private String customerEmail;
 
     @ApiModelProperty("公司名称")

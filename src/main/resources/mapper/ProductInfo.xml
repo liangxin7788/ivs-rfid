@@ -35,7 +35,7 @@
         select count(1) from product_info pi
         <where>
             1 = 1
-            <if test="vo.productTypeCode != null">
+            <if test="vo.productTypeCode != null and vo.productTypeCode != ''">
                 and pi.product_type_codes like concat('%', #{vo.productTypeCode}, '%')
             </if>
             <if test="vo.productTitle != null and vo.productTitle != ''">

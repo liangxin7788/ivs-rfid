@@ -195,7 +195,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
 
                 String unitId = UUID.randomUUID().toString().replaceAll("-", "");
                 filename = unitId + suffixName;
-                File dest = new File(filePath + filename);
+                File dest = new File(filePath + "picture/" + filename);
                 if (!dest.getParentFile().exists()) {
                     dest.getParentFile().mkdirs();
                 }
