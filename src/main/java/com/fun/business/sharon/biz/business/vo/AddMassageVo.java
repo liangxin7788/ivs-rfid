@@ -17,7 +17,7 @@ public class AddMassageVo {
     @ApiModelProperty("Name")
     private String name;
 
-    @ApiModelProperty("客户所属国家")
+    @ApiModelProperty("come from")
     private String comeFrom;
 
     @ApiModelProperty("Massage")
