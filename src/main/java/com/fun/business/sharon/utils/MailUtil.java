@@ -62,6 +62,8 @@ public class MailUtil {
         // 设置收件人 抄送给自己 避免网易554错误
         message.setRecipient(MimeMessage.RecipientType.CC, new InternetAddress(fromMail));
         InternetAddress[] inets = new InternetAddress[new EmailRecieverList().getToMail().size()];
+
+        // 接收人列表
         for (int i = 0; i < new EmailRecieverList().getToMail().size(); i++) {
             inets[i] = new InternetAddress(new EmailRecieverList().getToMail().get(i));
         }

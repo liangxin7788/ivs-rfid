@@ -59,6 +59,11 @@ public class CustomerMassage implements Serializable {
     private String company;
 
     /**
+     * 地址
+     */
+    private String address;
+
+    /**
      * 创建时间 虽然全局配置了时间格式，此处是为了发送邮件的时候格式处理
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")

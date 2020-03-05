@@ -11,11 +11,12 @@
         <result column="phone_number" property="phoneNumber" />
         <result column="customer_email" property="customerEmail" />
         <result column="create_at" property="createAt" />
+        <result column="address" property="address" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, come_from, massage, phone_number, customer_email, create_at
+        id, name, come_from, massage, phone_number, customer_email, create_at, address
     </sql>
 
     <select id="getMassageListCount" resultType="int">

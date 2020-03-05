@@ -32,4 +32,7 @@ public class AddMassageVo {
     @ApiModelProperty("公司名称")
     private String company;
 
+    @ApiModelProperty("地址")
+    private String address;
+
 }

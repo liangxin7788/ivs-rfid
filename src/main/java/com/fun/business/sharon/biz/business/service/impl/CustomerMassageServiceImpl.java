@@ -46,6 +46,7 @@ public class CustomerMassageServiceImpl extends ServiceImpl<CustomerMassageMappe
         customerMassage.setCustomerEmail(vo.getCustomerEmail());
         customerMassage.setCompany(vo.getCompany());
         customerMassage.setCreateAt(new Date());
+        customerMassage.setAddress(vo.getAddress());
         try {
             mailUtil.send(customerMassage, "客户线上留言");
         }catch (Exception e){
