@@ -12,11 +12,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -48,6 +50,7 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
     }
 
     @Override
+    @Transactional
     public String addApp(HttpServletRequest request) {
 //        List<String> types = this.selectAppTypes();
 
@@ -84,12 +87,14 @@ public class ApplicationServiceImpl extends ServiceImpl<ApplicationMapper, Appli
             String imageStr = builder.toString();
             application.setImages(imageStr.substring(0, imageStr.length() - 1));
         }
+        application.setUpdateAt(new Date());
         if (ObjectUtil.isNotEmpty(id)) {
             application.setId(Integer.valueOf(id));
             log.info("修改应用领域：" + JSON.toJSONString(application));
             applicationMapper.updateById(application);
             return "修改成功！";
         }else {
+            application.setCreateAt(new Date());
             applicationMapper.insert(application);
             log.info("添加应用领域：" + JSON.toJSONString(application));
             return "添加成功！";

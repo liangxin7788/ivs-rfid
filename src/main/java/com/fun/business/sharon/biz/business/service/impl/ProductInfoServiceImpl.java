@@ -135,10 +135,10 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
 
     @Override
     @Transactional
-    public Integer delProduct(Integer productId) {
+    public String delProduct(Integer productId) {
         ProductInfo productInfo = productInfoMapper.selectById(productId);
         log.info("删除产品 " + JSON.toJSONString(productInfo));
-        return productInfoMapper.deleteById(productInfo);
+        return productInfoMapper.deleteById(productInfo) == 1?"删除成功！":"删除失败！";
     }
 
     @Override

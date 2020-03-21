@@ -36,7 +36,7 @@ public class ApplicationController {
 
     @GetMapping("/getAppList")
     @ApiOperation("获取应用信息")
-    public GlobalResult<?> getAppList(@RequestParam(value = "appType", required = true)String appType){
+    public GlobalResult<?> getAppList(@RequestParam(value = "appType", required = false)String appType){
         return GlobalResult.newSuccess(applicationService.getOne(new QueryWrapper<Application>().eq("app_type", appType)));
     }
 

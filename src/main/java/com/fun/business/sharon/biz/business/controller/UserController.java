@@ -40,7 +40,7 @@ public class UserController {
             if(user.getUserName().length() < 2){
                 return GlobalResult.newError("添加用户失败! 用户名长度太短！");
             }
-            if(user.getUserName().length() < 6){
+            if(user.getPassword().length() < 6){
                 return GlobalResult.newError("添加用户失败! 密码安全性较低！");
             }
             userService.addUser(user);

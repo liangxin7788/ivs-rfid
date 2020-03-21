@@ -22,7 +22,7 @@ public interface ProductInfoService extends IService<ProductInfo> {
 
 //    Integer addProduct(AddProductVo vo);
 
-    Integer delProduct(Integer productId);
+    String delProduct(Integer productId);
 
     ProductInfo getProductDetail(Integer productId);
 
