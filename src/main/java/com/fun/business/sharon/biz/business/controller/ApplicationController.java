@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fun.business.sharon.biz.business.bean.Application;
 import com.fun.business.sharon.biz.business.service.ApplicationService;
 import com.fun.business.sharon.common.GlobalResult;
+import com.fun.business.sharon.utils.StringUtil;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +38,11 @@ public class ApplicationController {
     @GetMapping("/getAppList")
     @ApiOperation("获取应用信息")
     public GlobalResult<?> getAppList(@RequestParam(value = "appType", required = false)String appType){
-        return GlobalResult.newSuccess(applicationService.getOne(new QueryWrapper<Application>().eq("app_type", appType)));
+        if (StringUtil.isNotEmpty(appType)) {
+            return GlobalResult.newSuccess(applicationService.getOne(new QueryWrapper<Application>().eq("app_type", appType)));
+        }else {
+            return GlobalResult.newSuccess(applicationService.list(null));
+        }
     }
 
     @PostMapping("/addApp")
