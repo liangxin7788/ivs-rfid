@@ -2,7 +2,10 @@ package com.fun.business.sharon.biz.business.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.fun.business.sharon.biz.business.bean.Company;
+import com.fun.business.sharon.biz.business.vo.IdAndTitle;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * <p>
@@ -15,4 +18,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CompanyMapper extends BaseMapper<Company> {
 
+    List<IdAndTitle> getNewsTitle();
 }

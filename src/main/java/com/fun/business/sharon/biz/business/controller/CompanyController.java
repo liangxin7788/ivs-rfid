@@ -34,4 +34,9 @@ public class CompanyController {
         return GlobalResult.newSuccess(companyService.getNews(newsId));
     }
 
+    @GetMapping("/getNewsTitle")
+    public GlobalResult<?> getNewsTitle(@RequestParam(value = "newsId", required = false)Integer newsId){
+        return GlobalResult.newSuccess(companyService.getNewsTitle());
+    }
+
 }

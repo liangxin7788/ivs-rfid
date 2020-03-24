@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fun.business.sharon.biz.business.bean.Company;
 import com.fun.business.sharon.biz.business.dao.CompanyMapper;
 import com.fun.business.sharon.biz.business.service.CompanyService;
+import com.fun.business.sharon.biz.business.vo.IdAndTitle;
 import com.fun.business.sharon.utils.ObjectUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,5 +34,10 @@ public class CompanyServiceImpl extends ServiceImpl<CompanyMapper, Company> impl
             return list;
         }
         return companyMapper.selectList(null);
+    }
+
+    @Override
+    public List<IdAndTitle> getNewsTitle() {
+        return companyMapper.getNewsTitle();
     }
 }
