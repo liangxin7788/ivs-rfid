@@ -77,4 +77,8 @@
         limit 3
     </select>
 
+    <select id="getHomeProducts" resultType="com.fun.business.sharon.biz.business.bean.ProductInfo">
+        select * from product_info order by create_at desc limit 4
+    </select>
+
 </mapper>

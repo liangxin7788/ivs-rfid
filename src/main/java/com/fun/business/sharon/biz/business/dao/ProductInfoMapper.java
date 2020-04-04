@@ -27,4 +27,6 @@ public interface ProductInfoMapper extends BaseMapper<ProductInfo> {
     ProductInfo getProductDetail(@Param("productId")Integer productId);
 
     List<SimilarApplicationVo> selectSimilarByApplication(@Param("excludeId")Integer excludeId, @Param("application")String application);
+
+    List<ProductInfo> getHomeProducts();
 }

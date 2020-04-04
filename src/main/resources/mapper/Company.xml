@@ -17,7 +17,7 @@
     </sql>
 
     <select id="getNewsTitle" resultType="com.fun.business.sharon.biz.business.vo.IdAndTitle">
-        select id, title from company
+        select id, create_at createAt, title from company
         <where>
             id > 1
         </where>

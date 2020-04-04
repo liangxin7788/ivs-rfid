@@ -67,4 +67,10 @@ public class ProductInfoController {
         return GlobalResult.newSuccess(productInfoService.getProductDetail(productId));
     }
 
+    @GetMapping("/getHomeProducts")
+    @ApiOperation("获取首页推送的产品")
+    public GlobalResult<?> getHomeProducts(){
+        return GlobalResult.newSuccess(productInfoService.getHomeProducts());
+    }
+
 }

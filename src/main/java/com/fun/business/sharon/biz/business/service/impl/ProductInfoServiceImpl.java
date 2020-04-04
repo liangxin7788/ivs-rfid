@@ -214,5 +214,10 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
         return productInfoMapper.insert(productInfo);
     }
 
+    @Override
+    public List<ProductInfo> getHomeProducts() {
+        return productInfoMapper.getHomeProducts();
+    }
+
 
 }

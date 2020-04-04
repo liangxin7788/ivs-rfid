@@ -17,6 +17,8 @@ public class IdAndTitle implements Serializable {
 
     private Integer id;
 
+    private String createAt;
+
     private String title;
 
 }

@@ -7,6 +7,7 @@ import com.fun.business.sharon.biz.business.vo.AddProductVo;
 import com.fun.business.sharon.biz.business.vo.ProductListSearchVo;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * <p>
@@ -27,4 +28,6 @@ public interface ProductInfoService extends IService<ProductInfo> {
     ProductInfo getProductDetail(Integer productId);
 
     Integer addProduct(HttpServletRequest request);
+
+    List<ProductInfo> getHomeProducts();
 }
