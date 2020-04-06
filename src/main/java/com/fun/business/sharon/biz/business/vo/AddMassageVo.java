@@ -17,6 +17,9 @@ public class AddMassageVo {
     @ApiModelProperty("Name")
     private String name;
 
+    @ApiModelProperty("Titel")
+    private String titel;
+
     @ApiModelProperty("come from")
     private String comeFrom;
 

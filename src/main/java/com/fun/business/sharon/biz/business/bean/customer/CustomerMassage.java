@@ -29,6 +29,11 @@ public class CustomerMassage implements Serializable {
     private Integer id;
 
     /**
+     * 主题
+     */
+    private String titel;
+
+    /**
      * 客户名称
      */
     private String name;

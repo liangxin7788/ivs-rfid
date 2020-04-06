@@ -47,8 +47,9 @@ public class CustomerMassageServiceImpl extends ServiceImpl<CustomerMassageMappe
         customerMassage.setCompany(vo.getCompany());
         customerMassage.setCreateAt(new Date());
         customerMassage.setAddress(vo.getAddress());
+        customerMassage.setTitel(vo.getTitel());
         try {
-//            mailUtil.send(customerMassage, "客户线上留言");
+            mailUtil.send(customerMassage, "客户线上留言");
         }catch (Exception e){
             log.error(e.getMessage(), e);
             throw new OperateException("发送邮件失败！" + JSON.toJSONString(vo));

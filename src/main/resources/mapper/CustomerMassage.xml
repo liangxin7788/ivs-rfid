@@ -5,6 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.fun.business.sharon.biz.business.bean.customer.CustomerMassage">
         <id column="id" property="id" />
+        <result column="titel" property="titel" />
         <result column="name" property="name" />
         <result column="come_from" property="comeFrom" />
         <result column="massage" property="massage" />
@@ -16,7 +17,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, come_from, massage, phone_number, customer_email, create_at, address
+        id, name, come_from, massage, phone_number, customer_email, create_at, address, titel
     </sql>
 
     <select id="getMassageListCount" resultType="int">

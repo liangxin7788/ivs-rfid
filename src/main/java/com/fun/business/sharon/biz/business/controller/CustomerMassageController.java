@@ -36,7 +36,7 @@ public class CustomerMassageController {
     @ApiOperation("增加一条留言信息")
     public GlobalResult<?> addMassage(@RequestBody AddMassageVo vo){
         // 反射进行必填校验
-        CheckParamUtil.checkParamForCommit(vo, new String[]{"name", "massage", "customerEmail", "comeFrom"});
+        CheckParamUtil.checkParamForCommit(vo, new String[]{"name", "massage", "customerEmail", "comeFrom", "titel"});
         return GlobalResult.newSuccess(customerMassageService.addMassage(vo));
     }
 
