@@ -51,7 +51,7 @@ public class ApplicationController {
         return GlobalResult.newSuccess(applicationService.addApp(request));
     }
 
-    @PostMapping("/delApp")
+    @GetMapping("/delApp")
     @ApiOperation("删除一个应用领域信息")
     public GlobalResult<?> delApp(@RequestParam Integer appId){
         return GlobalResult.newSuccess(applicationService.removeById(appId));
