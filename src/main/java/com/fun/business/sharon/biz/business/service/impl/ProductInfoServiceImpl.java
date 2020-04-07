@@ -172,6 +172,8 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
         String chipType = request.getParameter("chipType");
         String readingRange = request.getParameter("readingRange");
 
+        String detailParam = request.getParameter("detailParam");
+
         ProductInfo productInfo = new ProductInfo();
         productInfo.setCreateAt(new Date());
         productInfo.setUpdateAt(new Date());
@@ -186,6 +188,8 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
         productInfo.setApplication(application);
         productInfo.setChipType(chipType);
         productInfo.setReadingRange(readingRange);
+
+        productInfo.setDetailParam(detailParam);
 
         if (CollectionUtils.isNotEmpty(images)) {
             StringBuilder builder = new StringBuilder();

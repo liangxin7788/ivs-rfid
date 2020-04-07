@@ -81,6 +81,11 @@ public class ProductInfo implements Serializable {
     private String readingRange;
 
     /**
+     * 详细参数
+     */
+    private String detailParam;
+
+    /**
      * 创建时间
      */
     private Date createAt;
