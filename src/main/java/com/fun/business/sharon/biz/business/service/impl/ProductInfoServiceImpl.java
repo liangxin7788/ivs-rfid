@@ -23,7 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -160,6 +162,12 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
     public Integer addProduct(HttpServletRequest request) {
 
         List<MultipartFile> images = ((MultipartHttpServletRequest) request).getFiles("images");
+        String id = request.getParameter("id");
+        Integer updateId = null;
+        if (StringUtils.isNotEmpty(id)) {
+            updateId = Integer.valueOf(id);
+        }
+        String oldImages = request.getParameter("oldImages");
         String cnName = request.getParameter("cnName");
         String enName = request.getParameter("enName");
         String description = request.getParameter("description");
@@ -190,7 +198,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
         productInfo.setReadingRange(readingRange);
 
         productInfo.setDetailParam(detailParam);
-
+        String imageStr = "";
         if (CollectionUtils.isNotEmpty(images)) {
             StringBuilder builder = new StringBuilder();
             for (MultipartFile file : images) {
@@ -212,8 +220,13 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
                 }
                 builder.append(fileUrl + filename).append(",");
             }
-            String imageStr = builder.toString();
+            imageStr = builder.toString();
             productInfo.setImages(imageStr.substring(0, imageStr.length() - 1));
+        }
+        if (ObjectUtils.isNotEmpty(updateId)) {
+            productInfo.setId(updateId);
+            productInfo.setImages(imageStr + "," + oldImages);
+            return productInfoMapper.updateById(productInfo);
         }
         return productInfoMapper.insert(productInfo);
     }
@@ -223,5 +236,119 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
         return productInfoMapper.getHomeProducts();
     }
 
+    @Override
+    public void downloadPDF(HttpServletRequest req, HttpServletResponse resp, String pdfUrl) {
+        if (StringUtils.isNotEmpty(pdfUrl)) {
+            File file = new File(pdfUrl);
+//            File file = new File("C:\\ITextTest-image.pdf");
+            String fileName = file.getName();
+            try {
+                // 设置响应的头部信息
+                resp.setHeader("content-disposition", "attachment;filename=" + fileName);
+                // 设置响应内容的类型
+                resp.setContentType(getFileContentType(fileName)+"; charset=UTF-8");
+                // 设置响应内容的长度
+                resp.setContentLength((int) file.length());
+                // 输出
+                outStream(new FileInputStream(file), resp.getOutputStream());
+                System.out.println("输出完毕！");
+            }catch (Exception e){
+                log.error("文件下载失败！" + e.getMessage(), e);
+            }
+
+            // ======================================================
+
+            // 设置下载文件的mineType，告诉浏览器下载文件类型
+//            String mineType = request.getServletContext().getMimeType(filename);
+//            response.setContentType(mineType);
+            // 设置一个响应头，无论是否被浏览器解析，都下载
+//            response.setHeader("Content-disposition", "attachment; filename=" + filename);
+
+            // 以流的形式下载文件
+//            InputStream fis = null;
+//            try {
+//                fis = new BufferedInputStream(new FileInputStream(pdfUrl));
+//                byte[] buffer = new byte[fis.available()];
+//                fis.read(buffer);
+//
+//                fis.close();
+//                // 清空response
+//                resp.reset();
+//                // 设置response的Header
+//                resp.addHeader("Content-disposition", "attachment;filename=" + new String(fileName.getBytes()));
+//                OutputStream toClient = new BufferedOutputStream(resp.getOutputStream());
+//                resp.setContentType("application/pdf;charset=UTF-8");
+//                toClient.write(buffer);
+//                toClient.flush();
+//                toClient.close();
+//                System.out.println("下载成功");
+//            }catch (Exception e){
+//                log.error("文件下载失败！" + e.getMessage(), e);
+//            }finally {
+//                try {
+//                    if (fis != null) {
+//                        fis.close();
+//                    }
+//                }catch (Exception e){
+//                    log.error("文件下载后未关流！" + e.getMessage(), e);
+//                }
+//            }
+        }else {
+            throw new OperateException("There is no file for this product!");
+        }
+    }
+
+    /**
+     * 基础字节数组输出
+     */
+    private static void outStream(InputStream is, OutputStream os) {
+        try {
+            byte[] buffer = new byte[10240];
+            int length = -1;
+            while ((length = is.read(buffer)) != -1) {
+                os.write(buffer, 0, length);
+                os.flush();
+            }
+        } catch (Exception e) {
+            System.out.println("执行 outStream 发生了异常：" + e.getMessage());
+        } finally {
+            try {
+                os.close();
+            } catch (IOException e) {
+            }
+            try {
+                is.close();
+            } catch (IOException e) {
+            }
+        }
+    }
+
+    /**
+     * 文件的内容类型
+     */
+    private static String getFileContentType(String name){
+        String result = "";
+        String fileType = name.toLowerCase();
+        if (fileType.endsWith(".png")) {
+            result = "image/png";
+        } else if (fileType.endsWith(".gif")) {
+            result = "image/gif";
+        } else if (fileType.endsWith(".jpg") || fileType.endsWith(".jpeg")) {
+            result = "image/jpeg";
+        } else if(fileType.endsWith(".svg")){
+            result = "image/svg+xml";
+        }else if (fileType.endsWith(".doc")) {
+            result = "application/msword";
+        } else if (fileType.endsWith(".xls")) {
+            result = "application/x-excel";
+        } else if (fileType.endsWith(".zip")) {
+            result = "application/zip";
+        } else if (fileType.endsWith(".pdf")) {
+            result = "application/pdf";
+        } else {
+            result = "application/octet-stream";
+        }
+        return result;
+    }
 
 }

@@ -2,11 +2,14 @@ package com.fun.business.sharon.biz.business.controller;
 
 
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
+import com.fun.business.sharon.biz.business.bean.ProductInfo;
 import com.fun.business.sharon.biz.business.service.ProductInfoService;
 import com.fun.business.sharon.biz.business.vo.AddProductVo;
 import com.fun.business.sharon.biz.business.vo.ProductListSearchVo;
 import com.fun.business.sharon.common.GlobalResult;
+import com.fun.business.sharon.common.OperateException;
 import com.fun.business.sharon.utils.CheckParamUtil;
+import com.fun.business.sharon.utils.ObjectUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -71,6 +75,17 @@ public class ProductInfoController {
     @ApiOperation("获取首页推送的产品")
     public GlobalResult<?> getHomeProducts(){
         return GlobalResult.newSuccess(productInfoService.getHomeProducts());
+    }
+
+    @GetMapping("/downloadPDF")
+    @ApiOperation("下载产品PDF文件信息")
+    public void downloadPDF(HttpServletRequest request, HttpServletResponse response, Integer productId){
+        ProductInfo productInfo = productInfoService.getById(productId);
+        if (ObjectUtil.isNotEmpty(productInfo)) {
+            productInfoService.downloadPDF(request, response, productInfo.getPdfUrl());
+        }else {
+            throw new OperateException("Download record no longer exists, please confirm!");
+        }
     }
 
 }

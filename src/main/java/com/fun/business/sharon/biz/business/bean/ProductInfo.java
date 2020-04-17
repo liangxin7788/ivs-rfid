@@ -71,6 +71,11 @@ public class ProductInfo implements Serializable {
     private String images;
 
     /**
+     * PDF文件地址
+     */
+    private String pdfUrl;
+
+    /**
      * 芯片类型
      */
     private String chipType;
