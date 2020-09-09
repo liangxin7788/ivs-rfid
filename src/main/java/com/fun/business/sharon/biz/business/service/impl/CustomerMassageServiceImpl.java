@@ -54,7 +54,8 @@ public class CustomerMassageServiceImpl extends ServiceImpl<CustomerMassageMappe
             log.error(e.getMessage(), e);
             throw new OperateException("发送邮件失败！" + JSON.toJSONString(vo));
         }
-        return customerMassageMapper.insert(customerMassage);
+//        return customerMassageMapper.insert(customerMassage);
+        return 1;
     }
 
     @Override

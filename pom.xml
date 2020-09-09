@@ -9,7 +9,6 @@
 
     <name>sharon</name>
     <description>a project for sharon</description>
-
     <url>http://liangxin.fun:8090/swagger-ui.html</url>
 
     <parent>
@@ -26,6 +25,11 @@
         <lombok.version>1.16.16</lombok.version>
         <!--		<poi.version>3.16</poi.version>-->
         <swagger.version>2.6.1</swagger.version>
+
+        <!--配置编码和docker的前缀-->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <docker.image.prefix>com.ivs</docker.image.prefix>
     </properties>
 
     <dependencies>
@@ -220,7 +224,7 @@
     </dependencies>
 
     <build>
-        <finalName>sharon</finalName>
+        <finalName>${project.artifactId}-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -237,6 +241,41 @@
                     <target>1.8</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
+            </plugin>
+
+
+            <!--docker打包相关-->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <!--dockerfile路径-->
+                    <dockerDirectory>src/main</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <configuration>
+                            <tasks>
+                                <copy todir="src/main" file="target/${project.artifactId}-${project.version}.${project.packaging}"></copy>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
