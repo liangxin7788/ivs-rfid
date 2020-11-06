@@ -2,7 +2,7 @@
 server:
   servlet:
     context-path: /sharon
-  port: 9080
+  port: 8090
 
 spring:
   datasource:
