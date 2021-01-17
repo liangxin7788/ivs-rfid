@@ -26,7 +26,7 @@ public class AddMassageVo {
     @ApiModelProperty("Massage")
     private String massage;
 
-    @ApiModelProperty("电话号码")
+    @ApiModelProperty("Tel")
     private String phoneNumber;
 
     @ApiModelProperty("E-mail")
