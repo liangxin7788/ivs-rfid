@@ -10,7 +10,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fun.business.sharon.biz.business.bean.ProductInfo;
 import com.fun.business.sharon.biz.business.dao.ProductInfoMapper;
 import com.fun.business.sharon.biz.business.service.ProductInfoService;
-import com.fun.business.sharon.biz.business.vo.AddProductVo;
 import com.fun.business.sharon.biz.business.vo.ProductListSearchVo;
 import com.fun.business.sharon.biz.business.vo.SimilarApplicationVo;
 import com.fun.business.sharon.common.OperateException;
@@ -25,7 +24,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -162,6 +160,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
     public Integer addProduct(HttpServletRequest request) {
 
         List<MultipartFile> images = ((MultipartHttpServletRequest) request).getFiles("images");
+        MultipartFile pdf = ((MultipartHttpServletRequest) request).getFile("pdf");
         String id = request.getParameter("id");
         Integer updateId = null;
         if (StringUtils.isNotEmpty(id)) {
@@ -223,6 +222,26 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
             imageStr = builder.toString();
             productInfo.setImages(imageStr.substring(0, imageStr.length() - 1));
         }
+
+        if (!pdf.isEmpty()) {
+            String filename = pdf.getOriginalFilename();
+            String suffixName = filename.substring(filename.lastIndexOf("."));
+
+            String unitId = UUID.randomUUID().toString().replaceAll("-", "");
+            filename = unitId + suffixName;
+            File dest = new File(filePath + "picture/" + filename);
+            if (!dest.getParentFile().exists()) {
+                dest.getParentFile().mkdirs();
+            }
+            try {
+                pdf.transferTo(dest);
+                productInfo.setPdfUrl(fileUrl + "picture/" + filename);
+            } catch (Exception e) {
+                log.error("添加产品文件上传pdf失败！" + e.getMessage(), e);
+                throw new OperateException("添加产品文件上传pdf失败！");
+            }
+        }
+
         if (ObjectUtils.isNotEmpty(updateId)) {
             productInfo.setId(updateId);
             productInfo.setImages(imageStr + "," + oldImages);
