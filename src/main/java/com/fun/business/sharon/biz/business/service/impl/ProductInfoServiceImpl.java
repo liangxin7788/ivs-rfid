@@ -13,6 +13,8 @@ import com.fun.business.sharon.biz.business.service.ProductInfoService;
 import com.fun.business.sharon.biz.business.vo.ProductListSearchVo;
 import com.fun.business.sharon.biz.business.vo.SimilarApplicationVo;
 import com.fun.business.sharon.common.OperateException;
+import com.fun.business.sharon.utils.ObjectUtil;
+import com.fun.business.sharon.utils.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,6 +51,9 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
     @Value("${sharon.file_url}")
     private String fileUrl;
 
+    @Autowired
+    RedisUtil redisUtil;
+
     @Override
     public IPage<ProductInfo> getProductList(ProductListSearchVo vo) {
 
@@ -70,69 +75,6 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
         return page;
     }
 
-//    @Override
-//    @Transactional
-//    public Integer addProduct(AddProductVo vo) {
-//        ProductInfo productInfo = new ProductInfo();
-////        String productTypeCodes = vo.getProductTypeCodes();
-////        String[] codes = productTypeCodes.split(",");
-////        String joinCodes = "";
-////        for (int i = 0; i < codes.length; i++) {
-////
-////            if (i != codes.length){
-////                joinCodes += codes[i] + ",";
-////            }else {
-////                joinCodes += codes[i];
-////            }
-////        }
-//
-//        productInfo.setProductTypeCodes(vo.getProductTypeCodes());
-//        productInfo.setCnName(vo.getProductCnName());
-//        productInfo.setEnName(vo.getProductEnName());
-//
-//        productInfo.setDescription(vo.getDescription());
-//        productInfo.setModel(vo.getModel());
-//        productInfo.setApplication(vo.getApplication());
-//        Date date = new Date();
-//        productInfo.setCreateAt(date);
-//        productInfo.setUpdateAt(date);
-//
-//        log.info("添加产品：" + JSON.toJSONString(productInfo));
-//        productInfoMapper.insert(productInfo);
-//
-//        MultipartFile file = vo.getFile();
-//        String fileName = vo.getFileName();
-//
-//        if (ObjectUtils.isEmpty(file)) {
-//            throw new OperateException("必须上传样品图!");
-//        }
-//        ProductPic productPic = new ProductPic();
-//        productPic.setCreateAt(date);
-//        productPic.setUpdateAt(date);
-//        productPic.setImageName(fileName);
-//        productPic.setProductInfoId(productInfo.getId());
-//
-//        String filename = file.getOriginalFilename();
-//        String suffixName = filename.substring(filename.lastIndexOf("."));
-//        String unitId = UUID.randomUUID().toString().replaceAll("-", "");
-//
-//        filename = unitId + suffixName;
-//
-//        File dest = new File(filePath + filename);
-//        if (!dest.getParentFile().exists()) {
-//            dest.getParentFile().mkdirs();
-//        }
-//        try {
-//            // 将获取到的附件file,transferTo写入到指定的位置(即:创建dest时，指定的路径)
-//            file.transferTo(dest);
-//        } catch (Exception e) {
-//            log.error("添加产品文件上传失败！" + e.getMessage(), e);
-//            throw new OperateException("添加产品文件上传失败！");
-//        }
-//        productPic.setImageUrl(fileUrl + filename);
-//        return productPicMapper.insert(productPic);
-//    }
-
     @Override
     @Transactional
     public String delProduct(Integer productId) {
@@ -143,7 +85,14 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
 
     @Override
     public ProductInfo getProductDetail(Integer productId) {
-        ProductInfo productDetail = productInfoMapper.getProductDetail(productId);
+        Object o = redisUtil.get("ProductDetailId=" + productId);
+        ProductInfo productDetail = null;
+        if (ObjectUtil.isNotEmpty(o)) {
+            productDetail = (ProductInfo)o;
+        }else {
+            productDetail = productInfoMapper.getProductDetail(productId);
+            redisUtil.set("ProductDetailId=" + productId, productDetail);
+        }
         String applications = productDetail.getApplication();
         if (StringUtils.isNotEmpty(applications)) {
             String[] split = applications.split(",");
