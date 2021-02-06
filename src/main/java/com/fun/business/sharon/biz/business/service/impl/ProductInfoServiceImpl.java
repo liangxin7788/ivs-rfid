@@ -85,15 +85,16 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
 
     @Override
     public ProductInfo getProductDetail(Integer productId) {
-        Object o = redisUtil.get("ProductDetailId=" + productId);
-        ProductInfo productDetail = null;
-        if (ObjectUtil.isNotEmpty(o)) {
-            productDetail = (ProductInfo)o;
-        }else {
-            productDetail = productInfoMapper.getProductDetail(productId);
-            redisUtil.set("ProductDetailId=" + productId, productDetail);
-        }
-        String applications = productDetail.getApplication();
+//        Object o = redisUtil.get("ProductDetailId=" + productId);
+//        ProductInfo productDetail = null;
+//        if (ObjectUtil.isNotEmpty(o)) {
+//            productDetail = (ProductInfo)o;
+//        }else {
+//            productDetail = productInfoMapper.getProductDetail(productId);
+//            redisUtil.set("ProductDetailId=" + productId, productDetail);
+//        }
+        ProductInfo productDetail = productInfoMapper.getProductDetail(productId);
+                String applications = productDetail.getApplication();
         if (StringUtils.isNotEmpty(applications)) {
             String[] split = applications.split(",");
             List<SimilarApplicationVo> similarList = productInfoMapper.selectSimilarByApplication(productDetail.getId(), split[0]);
@@ -172,7 +173,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
             productInfo.setImages(imageStr.substring(0, imageStr.length() - 1));
         }
 
-        if (!pdf.isEmpty()) {
+        if (null != pdf && !pdf.isEmpty()) {
             String filename = pdf.getOriginalFilename();
             String suffixName = filename.substring(filename.lastIndexOf("."));
 
@@ -193,7 +194,7 @@ public class ProductInfoServiceImpl extends ServiceImpl<ProductInfoMapper, Produ
 
         if (ObjectUtils.isNotEmpty(updateId)) {
             productInfo.setId(updateId);
-            productInfo.setImages(imageStr + "," + oldImages);
+//            productInfo.setImages(imageStr + "," + oldImages);
             return productInfoMapper.updateById(productInfo);
         }
         return productInfoMapper.insert(productInfo);
