@@ -39,7 +39,7 @@ public class OSSController {
             value.put("code", 200);
             value.put("msg", "图片上传成功");
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("图片上传失败！" + e.getMessage(), e);
             value.put("code", 600);
             value.put("msg", "图片上传失败！");
         }
